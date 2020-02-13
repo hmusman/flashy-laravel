@@ -226,6 +226,25 @@ class ProductController extends Controller
         //
     }
 
+    public function search_existing_product_result(Request $request){
+
+        // echo $product_name . "our product name";
+        $product = new Product;
+        $product->name = $request->product_name;
+        $product->id = $request->product_id;
+        // print_r($product->name . ' '. $product->id);
+
+        echo $product->name ." its our prod name";
+        $result = Product::where('name', 'LIKE',$product->name)->orwhere('id','LIKE',$product->id)->get();
+        // $result = Product::where('name', 'LIKE',$product->name)->get();
+        // $result = Product::where('name','LIKE','1')->get();
+        // $result = DB::t;
+        dd($result);
+         // return view('products.edit', compact('product', 'categories', 'tags'));
+        // product_search_result.blade.php
+
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -239,6 +258,13 @@ class ProductController extends Controller
         $tags = json_decode($product->tags);
         $categories = Category::all();
         return view('products.edit', compact('product', 'categories', 'tags'));
+    }
+
+
+    public function search_existing_product(Request $request,$product_id,$product_name){
+
+        echo $product_name . "our product name";
+
     }
 
     /**

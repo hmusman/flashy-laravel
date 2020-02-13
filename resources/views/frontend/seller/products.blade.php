@@ -32,10 +32,16 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-4 offset-md-4">
+                            <div class="col-md-6">
                                 <a class="dashboard-widget text-center plus-widget mt-4 d-block" href="{{ route('seller.products.upload')}}">
                                     <i class="la la-plus"></i>
                                     <span class="d-block title heading-6 strong-400 c-base-1">{{ __('Add New Product') }}</span>
+                                </a>
+                            </div>
+                            <div class="col-md-6">
+                                <a class="dashboard-widget text-center plus-widget mt-4 d-block" href="{{ route('seller.products.existing')}}">
+                                    <i class="la la-plus"></i>
+                                    <span class="d-block title heading-6 strong-400 c-base-1">{{ __('Add Existing Product') }}</span>
                                 </a>
                             </div>
                         </div>

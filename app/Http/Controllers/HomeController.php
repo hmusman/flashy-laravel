@@ -272,6 +272,12 @@ class HomeController extends Controller
         return view('frontend.seller.product_upload', compact('categories'));
     }
 
+    public function search_existing_product(Request $request)
+    {
+        $categories = Category::all();
+        return view('frontend.seller.search_existing_product', compact('categories'));
+    }
+
     public function show_product_edit_form(Request $request, $id)
     {
         $categories = Category::all();
@@ -281,7 +287,7 @@ class HomeController extends Controller
 
     public function seller_product_list(Request $request)
     {
-        $products = Product::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(10);
+        $products = Product::paginate(10);
         return view('frontend.seller.products', compact('products'));
     }
 

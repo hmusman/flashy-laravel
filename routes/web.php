@@ -115,6 +115,7 @@ Route::group(['middleware' => ['user', 'verified']], function(){
 Route::group(['prefix' =>'seller', 'middleware' => ['seller', 'verified']], function(){
 	Route::get('/products', 'HomeController@seller_product_list')->name('seller.products');
 	Route::get('/product/upload', 'HomeController@show_product_upload_form')->name('seller.products.upload');
+	Route::get('/products/existing', 'HomeController@search_existing_product')->name('seller.products.existing');
 	Route::get('/product/{id}/edit', 'HomeController@show_product_edit_form')->name('seller.products.edit');
 	Route::resource('payments','PaymentController');
 
@@ -126,6 +127,10 @@ Route::group(['prefix' =>'seller', 'middleware' => ['seller', 'verified']], func
 
 Route::group(['middleware' => ['auth']], function(){
 	Route::post('/products/store/','ProductController@store')->name('products.store');
+	// search product
+	// Route::post('/products/search/','ProductController@search_existing_product')->name('products.search');
+	Route::post('/products/search/result/','ProductController@search_existing_product_result')->name('products.search.result');
+
 	Route::post('/products/update/{id}','ProductController@update')->name('products.update');
 	Route::get('/products/destroy/{id}', 'ProductController@destroy')->name('products.destroy');
 	Route::get('/products/duplicate/{id}', 'ProductController@duplicate')->name('products.duplicate');
