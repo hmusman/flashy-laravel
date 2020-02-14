@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\Product;
+use App\Product_vendor;
 use App\Category;
 use App\Language;
 use Auth;
@@ -228,23 +229,58 @@ class ProductController extends Controller
 
     public function search_existing_product_result(Request $request){
 
-        // echo $product_name . "our product name";
-        $product = new Product;
-        $product->name = $request->product_name;
-        $product->id = $request->product_id;
-        // print_r($product->name . ' '. $product->id);
 
-        echo $product->name ." its our prod name";
-        $result = Product::where('name', 'LIKE',$product->name)->orwhere('id','LIKE',$product->id)->get();
-        // $result = Product::where('name', 'LIKE',$product->name)->get();
-        // $result = Product::where('name','LIKE','1')->get();
-        // $result = DB::t;
-        dd($result);
-         // return view('products.edit', compact('product', 'categories', 'tags'));
+        $product_name = $request->product_name;
+        $product_id = $request->product_id;
+        if(!empty($product_name)){
+
+            $result = Product::where('name', 'LIKE','%'.$product_name.'%')->get();
+        }
+        else if(!empty($product_id)){
+
+            $result = Product::where('id','LIKE','%'.$product_id.'%')->get();
+        }
+        
+        return view('frontend.seller.search_existing_product', compact('result'));
+        // return view('products.edit', compact('product', 'categories', 'tags'));
         // product_search_result.blade.php
 
     }
 
+    //Get existing product detail//
+    public function get_existing_product($id){
+
+            $product = Product::find(decrypt($id));
+            return view('frontend.seller.add_existing_product',compact('product'));
+    }
+    //save existing product
+    public function save_existing_product(Request $request){
+
+        $prod_id     = $request->input('prod_id');
+        $ven_id      = $request->input('ven_id');
+        $quantity    = $request->input('quantity');
+        $price       = $request->input('price');
+        $mk_price    = $request->input('mk_price');
+        $days        = $request->input('days');
+
+        $Data = array(
+                    'prod_id'       => $prod_id,
+                    'ven_id'        => $ven_id,
+                    'quantity'      => $quantity,
+                    'price'         => $price,
+                    'mk_price'      => $mk_price,
+                    'lead_time_day' => $days
+                );
+        if(Product_vendor::insert($Data)){
+
+            return Redirect::back()->with('success','Product add Successfully !');
+        }else{
+
+            return Redirect::back()->with('error','Product not add.Something went wrong!');
+
+        }
+
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -261,11 +297,11 @@ class ProductController extends Controller
     }
 
 
-    public function search_existing_product(Request $request,$product_id,$product_name){
+    // public function search_existing_product(Request $request,$product_id,$product_name){
 
-        echo $product_name . "our product name";
+    //     echo $product_name . "our product name";
 
-    }
+    // }
 
     /**
      * Show the form for editing the specified resource.

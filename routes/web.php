@@ -130,7 +130,8 @@ Route::group(['middleware' => ['auth']], function(){
 	// search product
 	// Route::post('/products/search/','ProductController@search_existing_product')->name('products.search');
 	Route::post('/products/search/result/','ProductController@search_existing_product_result')->name('products.search.result');
-
+	Route::get('/products/{id}/sell_existing','ProductController@get_existing_product')->name('products.sell_existing');
+	Route::post('/products/sell_existing/product','ProductController@save_existing_product')->name('products.sell_existing.product');
 	Route::post('/products/update/{id}','ProductController@update')->name('products.update');
 	Route::get('/products/destroy/{id}', 'ProductController@destroy')->name('products.destroy');
 	Route::get('/products/duplicate/{id}', 'ProductController@duplicate')->name('products.duplicate');

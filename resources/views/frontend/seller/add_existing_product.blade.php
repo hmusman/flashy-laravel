@@ -25,31 +25,80 @@
                                             <li><a href="{{ route('home') }}">{{__('Home')}}</a></li>
                                             <li><a href="{{ route('dashboard') }}">{{__('Dashboard')}}</a></li>
                                             <li><a href="{{ route('seller.products') }}">{{__('Products')}}</a></li>
-                                            <li class="active"><a href="{{ route('seller.products.upload') }}">{{__('Add Existing Product')}}</a></li>
+                                            <li class="active"><a href="{{ route('seller.products.upload') }}">{{__('Sell Existing Product')}}</a></li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <form class="" action="{{url('/products/search/result/')}}" method="POST" enctype="multipart/form-data" id="choice_form">
-                            @csrf
-                    		<input type="hidden" name="added_by" value="seller">
+                        @if(session('success'))
+
+                <div class="alert alert-success">
+
+                    {{session('success')}}
+
+                </div>
+
+            @endif
+
+            @if(session('error'))
+
+                <div class="alert alert-danger">
+
+                    {{session('error')}}
+
+                </div>
+
+            @endif
 
                             <div class="form-box bg-white mt-4">
                                 <div class="form-box-title px-3 py-2">
-                                    {{__('General')}}
                                 </div>
                                 <div class="form-box-content p-3">
                                     <div class="row">
-                                        
-                                        <div class="col-md-6">
-                                            <input type="text" class="form-control mb-3" name="product_name" placeholder="{{__('Search Product Name')}}">
+                                        <div class="col-md-5">
+                                            <img src="{{url('public')}}/{{$product->thumbnail_img}}">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <h6>{{$product->name}}</h6>
+                                            {{$product->meta_description}}
                                         </div>
                                         <div class="col-md-3">
-                                            <input type="text" class="form-control mb-3" name="product_id" placeholder="{{__('Search Product ID')}}">
-                                        </div>
-                                        <div class="col-md-3">
-                                            <button type="submit" class="btn btn-styled btn-base-1">{{ __('Search Exisiting Product') }}</button>
+                                            <div id="product_detail" style="background: #F7F7F7;padding: 15px">
+                                                <b>ID: {{$product->id}}</b><br>
+                                                <b>Slug: {{$product->slug}}</b><br>
+                                                <b>Tags: {{$product->tags}}</b><br>
+                                            </div><br>
+                                            <div id="savePrice" style="background: #D7EBFF;padding: 15px">
+                                                <form class="" action="{{url('/products/sell_existing/product')}}" method="POST" enctype="multipart/form-data" id="choice_form">
+                                                @csrf
+                                                <input type="hidden" name="prod_id" value="{{$product->id}}">
+                                                <input type="hidden" name="ven_id" value="{{ Auth::user()->id }}">
+                                                <input type="hidden" name="quantity" value="{{$product->current_stock}}">
+                                                <div class=form-group>
+                                                    <label>Price</label>
+                                                    <input type="number" name="price" class="form-control">
+                                                </div>
+                                                <div class=form-group>
+                                                    <label>Market Price</label>
+                                                    <input type="number" name="mk_price" class="form-control">
+                                                </div>
+                                                <div class=form-group>
+                                                    <label>Dispatch Days</label>
+                                                    <select name="days" class="form-control">
+                                                        <option selected disabled>choose</option>
+                                                        <option value="InStock">InStock</option>
+                                                        <option value="2 Days">2 Days</option>
+                                                        <option value="3 Days">3 Days</option>
+                                                        <option value="4 Days">4 Days</option>
+                                                        <option value="5 Days">5 Days</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button class="btn-primary" type="submit">Sell your Product</button>
+                                                </div>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                    
@@ -57,33 +106,7 @@
                             </div>
                          
                             
-                        </form>
-                      @if(isset($result))  
-                       <div class="card no-border mt-4"> 
-                        <table class="table table-sm table-hover table-responsive-md">
-                            <thead>
-                                <tr>
-                                <th></th>
-                                <th>ID</th>
-                                <th>Product</th>
-                                <th>SKU</th>
-                                <th>Upload Product</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($result as $productData)    
-                                <tr>
-                                    <td></td>
-                                    <td>{{$productData->id}}</td>
-                                    <td>{{$productData->name}}</td>
-                                    <td>{{$productData->tags}}</td>
-                                    <td><button class="btn-primary"><a href="{{route('products.sell_existing', encrypt($productData->id))}}" style="color: white">Sell your Product</a></button></td>
-                                </tr>
-                             @endforeach   
-                            </tbody>
-                        </table>
-                       </div> 
-                       @endif
+                        
                     </div>
                 </div>
             </div>
