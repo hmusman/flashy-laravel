@@ -271,7 +271,6 @@ class HomeController extends Controller
         $categories = Category::all();
         return view('frontend.seller.product_upload', compact('categories'));
     }
-
     public function search_existing_product(Request $request)
     {
         $categories = Category::all();
@@ -290,7 +289,7 @@ class HomeController extends Controller
         $products = Product::paginate(10);
         return view('frontend.seller.products', compact('products'));
     }
-
+    
     public function ajax_search(Request $request)
     {
         $keywords = array();
