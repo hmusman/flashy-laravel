@@ -158,11 +158,13 @@ return [
         /*
          * Application Service Providers...
          */
+
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
 
     ],
 
@@ -216,6 +218,7 @@ return [
         'Paypal' => Netshell\Paypal\Facades\Paypal::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Paystack' => Mehedi\Paystack\Facades\Paystack::class,
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];
